@@ -6,5 +6,14 @@ This social network lets the user maintain a tracklist of his finished games. Al
 Also, the not authenticated users can search games and see tops of best rated or most popular.
 
 ## User Model
-| Key | Type | Reference | Validations |
-| ----------- | ----------- | ----------- | ----------- |
+| Key | Type | Reference | Required | Validations |
+| ----------- | ----------- | ----------- | ----------- | -----------|
+| Username | String |  | Yes |  |
+| Email | Email |  | Yes |  |
+| Password | String |  | Yes |  |
+| Ratings | Array | Rates |  |  |
+| Finished Games | Array | Games |  |  |
+| Pending Games | Array | Games |  |  |
+| Favourite Games | Array | Games |  |  |
+| Friends | Array | User |  |  |
+| Your Platfforms | Object |  |  |  |
