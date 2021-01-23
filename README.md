@@ -25,7 +25,7 @@ Also, the not authenticated users can search games and see tops of best rated or
 | Genre | Array |  | Yes |  |
 | Plattforms | Array |  | Yes |  |
 | Release Date | Date |  | Yes |  |
-| Company | String |  |  | Yes |
+| Company | String |  | Yes |  |
 | Popularity | Number |  |  |  |
 | Comments | String | Rate |  |  |
 | Trailer | String |  |  |  |
