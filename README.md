@@ -17,3 +17,25 @@ Also, the not authenticated users can search games and see tops of best rated or
 | Favourite Games | Array | Games |  |  |
 | Friends | Array | User |  |  |
 | Your Platfforms | Object |  |  |  |
+---
+## Game Model
+| Key | Type | Reference | Required | Validations |
+| ----------- | ----------- | ----------- | ----------- | -----------|
+| Name | String |  | Yes |  |
+| Genre | Array |  | Yes |  |
+| Plattforms | Array |  | Yes |  |
+| Release Date | Date |  | Yes |  |
+| Company | String |  |  | Yes |
+| Popularity | Number |  |  |  |
+| Comments | String | Rate |  |  |
+| Trailer | String |  |  |  |
+| Gameplays | String |  |  |  |
+---
+## Rate Model
+| Key | Type | Reference | Required | Validations |
+| ----------- | ----------- | ----------- | ----------- | -----------|
+| User | ObjectId | User |  |  |
+| Game | ObjectId | Game |  |  |
+| Rate | Number |  |  |  |
+| Comment | String |  |  |  |
+| Created At | Date |  |  |  |
