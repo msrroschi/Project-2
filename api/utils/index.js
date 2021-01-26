@@ -8,7 +8,6 @@ function authUser (req, res, next) {
   } else {
     jwt.verify(req.headers.token, process.env.SECRET, (err, token) => {
       if (err) { res.status(403).json({ error: 'Token not valid' }) }
-
       UserModel
         .findOne({ email: token.email })
         .then(user => {
@@ -20,6 +19,12 @@ function authUser (req, res, next) {
   }
 }
 
+// Return HTTP error with details in JSON
+function handleError (err, res) {
+  return res.status(400).json(err)
+}
+
 module.exports = {
-  authUser
+  authUser,
+  handleError
 }

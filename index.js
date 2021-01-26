@@ -1,3 +1,4 @@
+process.stdout.write("\u001b[3J\u001b[2J\u001b[1J");console.clear();
 
 require('dotenv').config()
 
@@ -16,7 +17,8 @@ mongoose.connect(process.env.MONGO_URL,
     dbName: process.env.MONGO_DB || 'test',
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   }, err => {
     if (err) { throw new Error(err) }
     console.info('💾 Connected to Mongo Database \n')
@@ -25,7 +27,7 @@ mongoose.connect(process.env.MONGO_URL,
 // ADD MIDDLEWARES AND ROUTES
 const app = express()
   .use(cors())
-  .use(morgan('combined'))
+  .use(morgan('dev'))
   .use(express.json())
   .use(express.static(path.join(__dirname, 'public')))
   .use('/api', router)

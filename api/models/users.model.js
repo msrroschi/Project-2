@@ -17,25 +17,30 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   ratings: [{
     // type: mongoose.Schema.Types.ObjectId,
     // ref: rate
   }],
   finishedGames: [{
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: game
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'game'
   }],
-  pendingdGames: [{
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: game
+  pendingGames: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'game'
   }],
   favouriteGames: [{
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: game
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'game'
   }],
-  friends: [{
+  follows: [{
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: user
+  }],
+  followers: [{
     // type: mongoose.Schema.Types.ObjectId,
     // ref: user
   }],
