@@ -12,6 +12,41 @@ window.onload = function() {
   }
 }
 
+axios
+  .get('http://localhost:3000/api/games')
+  .then(games => {
+    console.log(games.data)
+    const mainBrowser = document.getElementById('main-browser')
+    const mainBrowserBtn = document.getElementById('main-browser-btn')
+    const result = document.getElementById('main-browser-results')
+    const names = []
+    
+    
+    const filter = () => {
+      console.log('primero')
+      result.innerHTML = ''
+
+      const text = mainBrowser.value.toLowerCase()
+      games.data.forEach(game => {
+        let name = game.name.toLowerCase
+        if (name.indexOf(text) !== -1) {
+          result.innerHTML +=`
+          <li>${game.name}</li>
+          `
+        }
+      })
+      if (result.innerHTML === '') {
+        result.innerHTML =`
+        <li>Game not found...</li>
+        `
+      } 
+    }
+    
+    mainBrowserBtn.addEventListener('click', filter)
+  })
+  .catch(err => console.log(err))
+
+
 // Home Button
 document.getElementById('home-btn').addEventListener('click', () => {
   window.location.reload()

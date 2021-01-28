@@ -1,5 +1,9 @@
 window.onload = function() {
 
+  const userId = localStorage.userId
+  console.log(userId)
+  localStorage.removeItem('userId')
+
   // Check if logged
   if (window.localStorage.token) {
     document.getElementById('signup-navbar').style.display = 'none'
@@ -10,7 +14,20 @@ window.onload = function() {
     document.getElementById('login-navbar').style.display = 'inline-block'
     document.getElementById('logout-btn').style.display = 'none'
   }
+
+  axios.get(`http://localhost:3000/api/users/${userId}`, {
+    headers: {
+      token: localStorage.token
+    }
+  })
+    .then(user => {
+      console.log(document.title, user)
+      document.title = user.data.username + ' Profile'
+    })
+    .catch(err => {console.log(err)})
 }
+
+
 
 // Sign Up Button
 document.getElementById('signup-btn').addEventListener('click', () => {

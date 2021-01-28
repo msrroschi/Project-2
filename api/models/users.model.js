@@ -51,6 +51,10 @@ const userSchema = new mongoose.Schema({
     googleStadia: Boolean,
     origin: Boolean,
     ubisoftConnect: Boolean
+  },
+  cratedAt: {
+    type: Date,
+    default: Date.now
   }
 })
 

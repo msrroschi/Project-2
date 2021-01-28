@@ -23,7 +23,7 @@ function getUserById(req, res) {
 
 function getMe(req, res) {
   console.log(res.locals)
-  // console.log(res)
+  console.log('hola')
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
@@ -55,6 +55,15 @@ function editMe(req, res) {
 //     })
 //     .catch(err => handleError(err, res))
 // }
+
+function getMyfollows(req, res) {
+  userModel
+    .findOne({ email: res.locals.user.email })
+    .then(user => {
+      res.json(user.follows)
+    })
+    .catch(err => handleError(err, res))
+}
 
 function addToFollows(req, res) {
   userModel
@@ -229,6 +238,7 @@ module.exports = {
   getMe,
   editMe,
   // deleteMe,
+  getMyfollows,
   addToFollows,
   deleteFromFollows,
 

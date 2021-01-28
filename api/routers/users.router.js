@@ -7,6 +7,7 @@ const {
   getMe,
   editMe,
   // deleteMe,
+  getMyfollows,
   addToFollows,
   deleteFromFollows,
   getMyFinished,
@@ -26,6 +27,9 @@ router
   .get('/:userId', authUser, getUserById)
   .put('/me', authUser, editMe)
   // .delete('/me', authUser, deleteMe)
+
+  // Follows
+  .get('/me/follows', authUser, getMyfollows)
   .post('/me/:userId', authUser, addToFollows)
   .delete('/me/:userId', authUser, deleteFromFollows)
 

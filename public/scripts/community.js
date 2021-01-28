@@ -28,9 +28,14 @@ window.onload = function() {
       // })
       
       document.body.appendChild(userHtml)
+      
       document.getElementById(`viewProfile${i}`).addEventListener('click', () => {
-        localStorage.setItem('userId', user._id)
-        window.location = 'http://localhost:3000/user.profile.html'
+        if (localStorage.token) {
+          localStorage.setItem('userId', user._id)
+          window.location = 'http://localhost:3000/user.profile.html'
+        } else {
+          window.alert('You have to be logged in')
+        }
       })
     })
   }
@@ -38,7 +43,6 @@ window.onload = function() {
   // Muestra todos los usuarios
   axios.get('http://localhost:3000/api/users/')
     .then(users => {
-      console.log(users.data)
       generateCommunity(users.data)
     })
     .catch(err => console.log(err))
