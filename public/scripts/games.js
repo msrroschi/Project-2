@@ -27,8 +27,6 @@ window.onload = function() {
     })
   }
 
-
-
   // Muestra todos los juegos
   axios.get('http://localhost:3000/api/games')
     .then(games => {
@@ -37,6 +35,64 @@ window.onload = function() {
     })
     .catch(err => console.log(err))
 }
+
+// Game Browser
+axios
+  .get('http://localhost:3000/api/games')
+  .then(games => {
+    games.data.forEach((game, i) => {
+      document.getElementById('main-browser-results').innerHTML += `
+      <option value="${game.name}" id="${game._id}"></option>
+      `
+      if (i < 10) console.log(game.name)
+    })
+  })
+  .catch(err => console.log(err))
+
+// Search Button
+document.getElementById('main-browser-btn').addEventListener('click', () => {
+  const search = document.getElementById('main-browser').value
+  axios
+    .get('http://localhost:3000/api/games')
+    .then(game => {
+      window.location = `http://localhost:3000/game.html?game=${search}`
+    })
+    .catch(err => console.log(err))
+})
+
+// Home Button
+document.getElementById('home-btn').addEventListener('click', () => {
+  window.location = 'http://localhost:3000/index.html'
+})
+
+// Profile Button
+document.getElementById('profile-btn').addEventListener('click', () => {
+  window.location = 'http://localhost:3000/own.profile.html'
+})
+
+// Community Button
+document.getElementById('community-btn').addEventListener('click', () => {
+  window.location = 'http://localhost:3000/community.html'
+})
+
+// Log In Button
+document.getElementById('login-btn').addEventListener('click', () => {
+  axios.post('http://localhost:3000/api/auth/login', {
+    email: document.getElementById('login-email').value,
+    password: document.getElementById('login-pass').value
+  })
+  .then(response => {
+    if (response.data && response.data.token) {
+      localStorage.setItem('token', response.data.token)
+      window.location.reload()
+    } else {
+      alert('Email or Password Wrong')
+    }
+  })
+  .catch(err => {
+    alert('Email or Password Wrong')
+  })
+})
 
 // Sign Up Button
 document.getElementById('signup-btn').addEventListener('click', () => {
@@ -63,41 +119,8 @@ document.getElementById('signup-btn').addEventListener('click', () => {
   }
 })
 
-// Log In Button
-document.getElementById('login-btn').addEventListener('click', () => {
-  axios.post('http://localhost:3000/api/auth/login', {
-    email: document.getElementById('login-email').value,
-    password: document.getElementById('login-pass').value
-  })
-  .then(response => {
-    if (response.data && response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      window.location.reload()
-    } else {
-      alert('Email or Password Wrong')
-    }
-  })
-  .catch(err => {
-    alert('Email or Password Wrong')
-  })
-})
-
-// Home Button
-document.getElementById('home-btn').addEventListener('click', () => {
-  goHome()
-})
-
-// Community Button
-document.getElementById('community-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/community.html'
-})
-
 // Log Out Button
 document.getElementById('logout-btn').addEventListener('click', () => {
   window.localStorage.clear()
   window.location.reload()
 })
-
-function goHome() {
-  window.location = 'http://localhost:3000/index.html'
-}

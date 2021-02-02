@@ -20,6 +20,9 @@ const gameSchema = new mongoose.Schema({
     // type: mongoose.Schema.Types.ObjectId,
     // ref: rate
   }],
+  image: {
+    type: String
+  },
   rawg_id: String
 })
 

@@ -1,0 +1,152 @@
+
+/* verde => #59cb73
+blanco => #fcfefd
+negro => #201f1d
+negro navbar => #272727 */
+
+/* body div * {
+  border: 1px solid red;
+} */
+
+#game-img {
+  width: 90%;
+  padding: 5% 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #59cb73;
+  border-radius: 5px;
+  margin-right: 5%;
+  margin-left: 5%;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 95%;
+  height: 95%;
+  border-radius: 5px;
+}
+
+.game-info {
+  margin: 0 5%;
+  padding: 5% 5%;
+  border-radius: 5px;
+  background-color: #59cb73;
+}
+
+#game-title {
+  background-color: #fcfefd;
+  border-radius: 5px;
+}
+
+h1 {
+  text-align: center;
+}
+
+#add-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 8px;
+}
+
+#rating {
+  position: relative;
+  height: 50px;
+  background-color:#fcfefd;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+#rating * {
+  top: 20%;
+  display: inline-block;
+  position: absolute;
+}
+
+#rating-word button {
+  left: 30px;
+  border-radius: 5px;
+  background-color: #fcfefd;
+  border: none;
+  font-size: xx-large;
+}
+
+#rating-number {
+  right: 20%;
+  border-radius: 5px;
+  background-color: #272727 !important;
+  /* color: white; */
+}
+
+#popularity {
+  position: relative;
+  height: 50px;
+  background-color:#fcfefd;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+#popularity * {
+  display: inline-block;
+  position: absolute;
+  top: 20%;
+}
+
+#popularity-word {
+  left: 10%;
+}
+
+#popularity-number {
+  right: 20%;
+  border-radius: 5px;
+  background-color: #272727 !important;
+  color: white;
+}
+
+#genres-platforms {
+  position: relative;
+  border: 1px solid black;
+  height: 150px;
+}
+
+#platforms, #genres {
+  display: inline-block;
+  position: absolute;
+  border-radius: 5px;
+  background-color:#fcfefd;
+  width: 49%;
+  text-align: center;
+}
+
+#platforms {
+  right: 0;
+}
+
+#release-date {
+  position: relative;
+  height: 50px;
+  background-color:#fcfefd;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+#release-date * {
+  display: inline-block;
+  position: absolute;
+  top: 20%;
+}
+
+#release-date-word {
+  left: 10%;
+}
+
+#release-date-word h3 {
+  width: 150px;
+}
+
+#release-date-number {
+  right: 20%;
+  border-radius: 5px;
+  background-color: #272727 !important;
+  color: white;
+}

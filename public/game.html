@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="styles/style.css">
-  <link rel="stylesheet" href="styles/user.profile.css">
+  <link rel="stylesheet" href="styles/game.css">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>TYG</title>
 </head>
 <body>
   <div class="container-fluid">
@@ -15,8 +15,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <form class="d-flex">
-          <input class="form-control me-2" type="search" list="main-browser-results" placeholder="Search" aria-label="Search" id="main-browser">
-          <button class="btn btn-outline-light" type="submit" id='main-browser-btn'>Search</button>
+          <input class="form-control me-2" list="main-browser-results" type="search" placeholder="Search" aria-label="Search" id="main-browser">
+          <button class="btn btn-outline-light" type="submit" id="main-browser-btn">Search</button>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -49,6 +49,7 @@
 
     <!-- Browser Suggestions -->
     <datalist id="main-browser-results">
+      <span>hola</span>
     </datalist>
 
     <!-- Log In Modal -->
@@ -120,78 +121,112 @@
       </div>
     </div>
 
-    <!-- Username -->
-    <div id="user-name"  class="my-3">
-      <h1></h1>
+    <!-- Game Image -->
+    <div id="game-img">
     </div>
 
-    <!-- Tags Table -->
-    <div class="container my-4" id="user-tab-table">
-      <ul class="nav nav-tabs small" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="finished-tab" data-bs-toggle="tab" href="#finished" role="tab" aria-controls="finished" aria-selected="true">Finished</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="pending-tab" data-bs-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="false">Pending</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="favourites-tab" data-bs-toggle="tab" href="#favourites" role="tab" aria-controls="favourites" aria-selected="false">Favourites</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="follows-tab" data-bs-toggle="tab" href="#follows" role="tab" aria-controls="follows" aria-selected="false">Follows</a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="finished" role="tabpanel" aria-labelledby="finished-tab">
-          <table class="table table-dark table-hover user-table" id="finished-table">
-            <thead>
-              <tr>
-                <th id="finished-tablehead-index">#</th>
-                <th id="finished-tablehead-name">Name</th>
-                <th id="finished-tablehead-rating">Rating</th>
-              </tr>
-            </thead>
-          </table>
+    <div class="game-info">
+      <!-- Game Title -->
+      <section id="game-title">
+        <h1></h1>
+      </section>
+
+      <!-- Add Buttons -->
+      <div id="add-buttons">
+        <button type="button" class="btn btn-outline-dark" id="finished-button">Finished</button>
+        <button type="button" class="btn btn-outline-dark" id="pending-button">Pending</button>
+        <button type="button" class="btn btn-outline-dark" id="favourites-button">Favourites</button>
+      </div>
+  
+      <!-- Game Rating -->
+      <div id="rating">
+        <div id="rating-word">
+          <button type="button" data-bs-toggle="modal" data-bs-target="#rate-modal">
+            <h2>Rate</h2>
+          </button>
         </div>
-        <div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-          <table class="table table-dark table-hover user-table" id="pending-table">
-            <thead>
-              <tr>
-                <th id="pending-tablehead-enum">#</th>
-                <th id="pending-tablehead-name">Name</th>
-                <th id="pending-tablehead-rating">Rating</th>
-              </tr>
-            </thead>
-          </table>
+        <div id="rating-number">
+          <h2>8</h2>
         </div>
-        <div class="tab-pane fade" id="favourites" role="tabpanel" aria-labelledby="favourites-tab">
-          <table class="table table-dark table-hover user-table" id="favourites-table">
-            <thead>
-              <tr>
-                <th id="favourites-tablehead-enum">#</th>
-                <th id="favourites-tablehead-name">Name</th>
-                <th id="favourites-tablehead-rating">Rating</th>
-              </tr>
-            </thead>
-          </table>
+      </div>
+
+      <!-- Game Popularity -->
+      <div id="popularity">
+        <div id="popularity-word">
+          <h2>Popularity</h2>
         </div>
-        <div class="tab-pane fade" id="follows" role="tabpanel" aria-labelledby="follows-tab">
-          <table class="table table-dark table-hover user-table" id="follows-table">
-            <thead>
-              <tr>
-                <th id="follows-tablehead-enum">#</th>
-                <th id="follows-tablehead-name">Name</th>
-              </tr>
-            </thead>
-          </table>
+        <div id="popularity-number">
+          <h2>8</h2>
+        </div>
+      </div>
+
+      <div id="genres-platforms">
+
+        <!-- Game Genres -->
+        <div id="genres">
+          <div id="genres-word">
+            <h2>Genres</h2>
+          </div>
+          <div id="genres-list">
+            <ul class="unstyled">
+            </ul>
+          </div>
+        </div>
+  
+        <!-- Game Platforms -->
+        <div id="platforms">
+          <div id="platforms-word">
+            <h2>Platforms</h2>
+          </div>
+          <div id="platforms-list">
+            <ul class="unstyled">
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Game Realease Date -->
+      <div id="release-date">
+        <div id="release-date-word">
+          <h3>Release Date</h3>
+        </div>
+        <div id="release-date-number">
+          <h2>8</h2>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Rate Modal -->
+    <div class="modal fade" id="rate-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">How would you Rate this game</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Rate Form -->
+            <div class="mb-3">
+              <label for="rate-number-modal" class="form-label">Score the game</label>
+              <input type="range" class="form-range" min="0" max="10" id="rate-number-modal">
+            </div>
+            <div class="mb-3">
+              <label for="rate-comment-modal" class="form-label">Leave a comment</label>
+              <textarea class="form-control" id="rate-comment" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
       </div>
     </div>
-    
 
   </div>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-  <script src="scripts/user.profile.js"></script>
+  <script src="scripts/game.js"></script>
+
 </body>
 </html>

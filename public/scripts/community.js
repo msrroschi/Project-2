@@ -48,6 +48,39 @@ window.onload = function() {
     .catch(err => console.log(err))
 }
 
+// Home Button
+document.getElementById('home-btn').addEventListener('click', () => {
+  window.location = 'http://localhost:3000/index.html'
+})
+
+// Profile Button
+document.getElementById('profile-btn').addEventListener('click', () => {
+  window.location = 'http://localhost:3000/own.profile.html'
+})
+
+// Community Button
+document.getElementById('community-btn').addEventListener('click', () => {
+  window.location.reload()
+})
+
+// Log In Button
+document.getElementById('login-btn').addEventListener('click', () => {
+  axios.post('http://localhost:3000/api/auth/login', {
+    email: document.getElementById('login-email').value,
+    password: document.getElementById('login-pass').value
+  })
+  .then(response => {
+    if (response.data && response.data.token) {
+      localStorage.setItem('token', response.data.token)
+      window.location.reload()
+    } else {
+      alert('Email or Password Wrong')
+    }
+  })
+  .catch(err => {
+    alert('Email or Password Wrong')
+  })
+})
 
 // Sign Up Button
 document.getElementById('signup-btn').addEventListener('click', () => {
@@ -72,35 +105,6 @@ document.getElementById('signup-btn').addEventListener('click', () => {
     pass.classList.add('wrongPass')
     repeatedPass.classList.add('wrongPass')
   }
-})
-
-// Log In Button
-document.getElementById('login-btn').addEventListener('click', () => {
-  axios.post('http://localhost:3000/api/auth/login', {
-    email: document.getElementById('login-email').value,
-    password: document.getElementById('login-pass').value
-  })
-  .then(response => {
-    if (response.data && response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      window.location.reload()
-    } else {
-      alert('Email or Password Wrong')
-    }
-  })
-  .catch(err => {
-    alert('Email or Password Wrong')
-  })
-})
-
-// Home Button
-document.getElementById('home-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/index.html'
-})
-
-// Community Button
-document.getElementById('community-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/community.html'
 })
 
 // Log Out Button

@@ -34,6 +34,7 @@ async function insertGame(game){
       releaseDate: game.released,
       popularity: 0,
       comments: [],
+      image: game.background_image,
       rawg_id: game.id
     })
   } catch (error) {

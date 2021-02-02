@@ -12,44 +12,38 @@ window.onload = function() {
   }
 }
 
+// Game Browser
 axios
   .get('http://localhost:3000/api/games')
   .then(games => {
-    console.log(games.data)
-    const mainBrowser = document.getElementById('main-browser')
-    const mainBrowserBtn = document.getElementById('main-browser-btn')
-    const result = document.getElementById('main-browser-results')
-    const names = []
-    
-    
-    const filter = () => {
-      console.log('primero')
-      result.innerHTML = ''
-
-      const text = mainBrowser.value.toLowerCase()
-      games.data.forEach(game => {
-        let name = game.name.toLowerCase
-        if (name.indexOf(text) !== -1) {
-          result.innerHTML +=`
-          <li>${game.name}</li>
-          `
-        }
-      })
-      if (result.innerHTML === '') {
-        result.innerHTML =`
-        <li>Game not found...</li>
-        `
-      } 
-    }
-    
-    mainBrowserBtn.addEventListener('click', filter)
+    games.data.forEach((game, i) => {
+      document.getElementById('main-browser-results').innerHTML += `
+      <option value="${game.name}" id="${game._id}"></option>
+      `
+      if (i < 10) console.log(game.name)
+    })
   })
   .catch(err => console.log(err))
 
+// Search Button
+document.getElementById('main-browser-btn').addEventListener('click', () => {
+  const search = document.getElementById('main-browser').value
+  axios
+    .get('http://localhost:3000/api/games')
+    .then(game => {
+      window.location = `http://localhost:3000/game.html?game=${search}`
+    })
+    .catch(err => console.log(err))
+})
 
 // Home Button
 document.getElementById('home-btn').addEventListener('click', () => {
   window.location.reload()
+})
+
+// Profile Button
+document.getElementById('profile-btn').addEventListener('click', () => {
+  window.location = 'http://localhost:3000/own.profile.html'
 })
 
 // Community Button
@@ -106,7 +100,3 @@ document.getElementById('logout-btn').addEventListener('click', () => {
   window.localStorage.clear()
   window.location.reload()
 })
-
-function goHome() {
-  window.location = 'http://localhost:3000/index.html'
-}

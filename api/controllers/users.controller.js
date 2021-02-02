@@ -15,7 +15,12 @@ function getAllUsers(req, res) {
 function getUserById(req, res) {
   userModel
     .findById(req.params.userId)
+    .populate('finishedGames')
+    .populate('pendingGames')
+    .populate('favouriteGames')
+    .populate('ratings')
     .then(user => {
+      console.log(user.finishedGames)
       res.json(user)
     })
     .catch(err => handleError(err, res))
@@ -117,12 +122,18 @@ function getMyFinished(req, res) {
 }
 
 function addGameToFinished(req, res) {
+  console.log(res.locals.user.email)
+  console.log('controller' + req.params.gameId)
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
-      user.finishedGames.push(mongoose.Types.ObjectId(req.params.gameId))
+      user.finishedGames.push(req.params.gameId)
       user.save(err => {
         if (err) res.status(500).send('Change not saved')
+
+        console.log(user.pendingGames)
+        console.log(user.pendingGames.indexOf(req.params.gameId))
+        
         user.pendingGames.splice(user.pendingGames.indexOf(req.params.gameId), 1)
         user.save(err => {
           if (err) res.status(500).send('Change not saved')
