@@ -1,5 +1,6 @@
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  // baseURL: 'http://localhost:3000/api/',
+  baseURL: 'https://tyg-app.herokuapp.com',
   timeout: 1000
 })
 
