@@ -1,3 +1,8 @@
+const api = axios.create({
+  baseUrl: 'http://localhost:3000/api/',
+  timeout: 1000
+})
+
 // const { default: axios } = require("axios");
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -7,16 +12,17 @@ let globalGame = {}
 window.onload = () => {
 
   // Check if logged
-  if (localStorage.token) {
-    document.getElementById('signup-navbar').style.display = 'none'
-    document.getElementById('login-navbar').style.display = 'none'
-    document.getElementById('logout-btn').style.display = 'inline-block'
+  if (window.localStorage.token) {
+    document.getElementById('signup-navbar').style.display = "none"
+    document.getElementById('login-navbar').style.display = "none"
+    document.getElementById('logout-btn').style.display = "inline-block"
+    document.getElementById('profile-btn').style.display = "inline-block"
   } else {
-    document.getElementById('signup-navbar').style.display = 'inline-block'
-    document.getElementById('login-navbar').style.display = 'inline-block'
-    document.getElementById('logout-btn').style.display = 'none'
+    document.getElementById('signup-navbar').style.display = "inline-block"
+    document.getElementById('login-navbar').style.display = "inline-block"
+    document.getElementById('logout-btn').style.display = "none"
+    document.getElementById('profile-btn').style.display = "none"
   }
-
 
   axios
     .get(`http://localhost:3000/api/games/${urlParams.get('game')}`)
