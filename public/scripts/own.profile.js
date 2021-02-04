@@ -1,38 +1,34 @@
 window.onload = function() {
 
-  const userId = localStorage.userId
-  localStorage.removeItem('userId')
-
   // Check if logged
   if (window.localStorage.token) {
-    document.getElementById('signup-navbar').style.display = 'none'
-    document.getElementById('login-navbar').style.display = 'none'
-    document.getElementById('logout-btn').style.display = 'inline-block'
+    document.getElementById('signup-navbar').style.display = "none"
+    document.getElementById('login-navbar').style.display = "none"
+    document.getElementById('logout-btn').style.display = "inline-block"
   } else {
-    document.getElementById('signup-navbar').style.display = 'inline-block'
-    document.getElementById('login-navbar').style.display = 'inline-block'
-    document.getElementById('logout-btn').style.display = 'none'
+    document.getElementById('signup-navbar').style.display = "inline-block"
+    document.getElementById('login-navbar').style.display = "inline-block"
+    document.getElementById('logout-btn').style.display = "none"
   }
 
-  // Get User Info
+  // Get my Info
   axios
-    .get(`http://localhost:3000/api/users/${userId}`, {
+    .get('http://localhost:3000/api/users/me', {
       headers: {
         token: localStorage.token
       }
     })
-    .then(user => {
-      document.title = user.data.username + ' Profile'
+    .then(me => {
+      console.log(me.data)
 
-      // Username
-      document.getElementById('user-name').innerText = user.data.username
+      // My name
+      document.getElementById('my-name').innerText = me.data.username
 
       // Generate FinishedGames Table
       document.getElementById('finished-table').appendChild(document.createElement('tbody'))
 
       let fiTbody = document.querySelector('#finished-table tbody')
-
-      user.data.finishedGames.forEach((game, i) => {
+      me.data.finishedGames.forEach((game, i) => {
         // Create Row
         let fiTr = document.createElement('tr')
 
@@ -64,7 +60,7 @@ window.onload = function() {
 
       let peTbody = document.querySelector('#pending-table tbody')
 
-      user.data.pendingGames.forEach((game, i) => {
+      me.data.pendingGames.forEach((game, i) => {
         // Create Row
         let peTr = document.createElement('tr')
 
@@ -95,7 +91,7 @@ window.onload = function() {
       document.getElementById('favourites-table').appendChild(document.createElement('tbody'))
 
       let faTbody = document.querySelector('#favourites-table tbody')
-      user.data.favouriteGames.forEach((game, i) => {
+      me.data.favouriteGames.forEach((game, i) => {
         // Create Row
         let faTr = document.createElement('tr')
 
@@ -122,13 +118,57 @@ window.onload = function() {
         faTbody.appendChild(faTr)
       })
 
+      // Generating Account Table
+
+      // Create My Data
+      document.getElementById('my-name-table').innerText = me.data.username
+      document.getElementById('my-email-table').innerText = me.data.email
+      document.getElementById('total-entries-table').innerText = me.data.finishedGames.length + me.data.pendingGames.length
+
       // Create Follows Table
-      document.getElementById('followers-table').appendChild(document.createElement('tbody'))
+      let followsTbody = document.querySelector('#follows-accordion-table tbody')
 
-      let followersTbody = document.querySelector('#followers-table tbody')
+      me.data.follows.forEach((follow, i)=> {
 
-      user.data.followers.forEach((follower, i)=> {
-        console.log(follower)
+        // Create Row
+        let followTr = document.createElement('tr')
+
+        // Create Index
+        let followIndexTd = document.createElement('td')
+        followIndexTd.innerText = i+1
+        followIndexTd.classList.add(`${i}`)
+        followTr.appendChild(followIndexTd)
+
+        // Create Name
+        let followNameTd = document.createElement('td')
+        followNameTd.innerHTML = `
+        <a id ="follow${i}" href="http://localhost:3000/user.profile.html?userName=${follow.username}">${follow.username}</a>
+        `
+        followNameTd.classList.add(`name${i}`)
+        followTr.appendChild(followNameTd)
+
+        // Create View Profile Button
+        let followViewProfileButtonTd = document.createElement('td')
+        followViewProfileButtonTd.innerHTML = `
+        <button type="button" id="view-profile-btn${i}" class="btn btn-primary">View Profile</button>
+        `
+        followTr.appendChild(followViewProfileButtonTd)
+        
+        // Create Delete Follow Button
+        //
+        
+        followsTbody.appendChild(followTr)
+        
+        document.getElementById(`view-profile-btn${i}`).addEventListener('click', () => {
+          localStorage.setItem('userId', follow._id)
+          window.location = 'http://localhost:3000/user.profile.html'
+        })
+      })
+
+      // Create Followers Table
+      let followersTbody = document.querySelector('#followers-accordion-table tbody')
+
+      me.data.followers.forEach((follower, i)=> {
 
         // Create Row
         let followerTr = document.createElement('tr')
@@ -158,14 +198,14 @@ window.onload = function() {
         //
         
         followersTbody.appendChild(followerTr)
-        
+
         document.getElementById(`view-profile-btn${i}`).addEventListener('click', () => {
           localStorage.setItem('userId', follower._id)
           window.location = 'http://localhost:3000/user.profile.html'
         })
       })
     })
-    .catch(err => {console.log(err)})
+    .catch(err => console.log(err))
 }
 
 // Game Browser
@@ -194,7 +234,7 @@ document.getElementById('main-browser-btn').addEventListener('click', () => {
 
 // Home Button
 document.getElementById('home-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/index.html'
+  window.location.reload()
 })
 
 // Profile Button

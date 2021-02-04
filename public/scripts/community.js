@@ -21,11 +21,6 @@ window.onload = function() {
           <button type="button" class="btn btn-primary" id="viewProfile${i}">View Profile</button>
         </li>
       </ul>`
-
-      // como hacer una pagina para cada usuario
-      // document.getElementById(`viewProfile$${i}`).addEventListener('click', () => {
-      //   window.location(`http://localhost:3000/${username}`)
-      // })
       
       document.body.appendChild(userHtml)
       

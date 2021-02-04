@@ -6,6 +6,7 @@ const { handleError } = require('../utils/index')
 function getAllUsers(req, res) {
   userModel
     .find()
+    .populate('ratings')
     .then(users => {
       res.json(users)
     })
@@ -18,6 +19,7 @@ function getUserById(req, res) {
     .populate('finishedGames')
     .populate('pendingGames')
     .populate('favouriteGames')
+    .populate('followers')
     .populate('ratings')
     .then(user => {
       console.log(user.finishedGames)
@@ -26,11 +28,28 @@ function getUserById(req, res) {
     .catch(err => handleError(err, res))
 }
 
+function getUserByName(req, res) {
+  userModel
+    .findOne(req.params.userName)
+    .populate('finishedGames')
+    .populate('pendingGames')
+    .populate('favouriteGames')
+    .populate('followers')
+    .then(user => res.json(user))
+    .catch(err => handleError(err, res))
+}
+
 function getMe(req, res) {
   console.log(res.locals)
   console.log('hola')
   userModel
     .findOne({ email: res.locals.user.email })
+    .populate('finishedGames')
+    .populate('pendingGames')
+    .populate('favouriteGames')
+    .populate('follows')
+    .populate('followers')
+    .populate('ratings')
     .then(user => {
       res.send(user)
     })
@@ -122,18 +141,12 @@ function getMyFinished(req, res) {
 }
 
 function addGameToFinished(req, res) {
-  console.log(res.locals.user.email)
-  console.log('controller' + req.params.gameId)
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
       user.finishedGames.push(req.params.gameId)
       user.save(err => {
         if (err) res.status(500).send('Change not saved')
-
-        console.log(user.pendingGames)
-        console.log(user.pendingGames.indexOf(req.params.gameId))
-        
         user.pendingGames.splice(user.pendingGames.indexOf(req.params.gameId), 1)
         user.save(err => {
           if (err) res.status(500).send('Change not saved')
@@ -217,11 +230,15 @@ function addGameToFavourites(req, res) {
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
-      user.favouriteGames.push(mongoose.Types.ObjectId(req.params.gameId))
-      user.save(err => {
-        if (err) res.status(500).send('Change not saved')
-        res.json(user.favouriteGames)
-      })
+      const checkFinished = user.finishedGames.includes(mongoose.Types.ObjectId(req.params.gameId))
+      const checkPending = user.pendingGames.includes(mongoose.Types.ObjectId(req.params.gameId))
+      if (checkFinished || checkPending) {
+        user.favouriteGames.push(mongoose.Types.ObjectId(req.params.gameId))
+        user.save(err => {
+          if (err) res.status(500).send('Change not saved')
+          res.json(user.favouriteGames)
+        })
+      } else res.send('You must add the game first to Finished List or Pending List')
     })
     .catch(err => handleError(err, res))
 }
@@ -246,6 +263,7 @@ function deleteGameFromFavourites(req, res) {
 module.exports = {
   getAllUsers,
   getUserById,
+  getUserByName,
   getMe,
   editMe,
   // deleteMe,

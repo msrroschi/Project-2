@@ -28,6 +28,8 @@ img {
 }
 
 .game-info {
+  display: flex;
+  flex-direction: column;
   margin: 0 5%;
   padding: 5% 5%;
   border-radius: 5px;
@@ -37,6 +39,7 @@ img {
 #game-title {
   background-color: #fcfefd;
   border-radius: 5px;
+  margin-bottom: 8px;
 }
 
 h1 {
@@ -49,95 +52,71 @@ h1 {
   margin-bottom: 8px;
 }
 
-#rating {
-  position: relative;
+#rating, #popularity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 50px;
-  background-color:#fcfefd;
   border-radius: 5px;
   margin-bottom: 8px;
-}
-
-#rating * {
-  top: 20%;
-  display: inline-block;
-  position: absolute;
+  background-color:#fcfefd;
 }
 
 #rating-word button {
-  left: 30px;
   border-radius: 5px;
-  background-color: #fcfefd;
   border: none;
   font-size: xx-large;
+  background-color: #fcfefd;
 }
 
-#rating-number {
-  right: 20%;
+#rating-number, #popularity-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px;
+  padding: 0 5px;
   border-radius: 5px;
-  background-color: #272727 !important;
-  /* color: white; */
-}
-
-#popularity {
-  position: relative;
-  height: 50px;
-  background-color:#fcfefd;
-  border-radius: 5px;
-  margin-bottom: 8px;
-}
-
-#popularity * {
-  display: inline-block;
-  position: absolute;
-  top: 20%;
-}
-
-#popularity-word {
-  left: 10%;
-}
-
-#popularity-number {
-  right: 20%;
-  border-radius: 5px;
-  background-color: #272727 !important;
+  background-color: #59cb73 !important;
   color: white;
 }
 
+#popularity-word {
+  margin-left: 8px;
+}
+
 #genres-platforms {
-  position: relative;
-  border: 1px solid black;
-  height: 150px;
-}
-
-#platforms, #genres {
-  display: inline-block;
-  position: absolute;
-  border-radius: 5px;
-  background-color:#fcfefd;
-  width: 49%;
-  text-align: center;
-}
-
-#platforms {
-  right: 0;
-}
-
-#release-date {
-  position: relative;
-  height: 50px;
-  background-color:#fcfefd;
-  border-radius: 5px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
   margin-bottom: 8px;
 }
 
-#release-date * {
-  display: inline-block;
-  position: absolute;
-  top: 20%;
+#platforms, #genres {
+  border-radius: 5px;
+  background-color:#fcfefd;
+  width: 48%;
+  height: 180px;
 }
 
-#release-date-word {
-  left: 10%;
+#genres-word, #platforms-word {
+  text-align: center;
+  background-color: rgb(179, 173, 173);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+#genres-list, #platforms-list {
+  overflow: auto;
+  height: 75%;
+}
+
+#release-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#fcfefd;
+  border-radius: 5px;
+  margin-bottom: 8px;
 }
 
 #release-date-word h3 {
@@ -147,6 +126,7 @@ h1 {
 #release-date-number {
   right: 20%;
   border-radius: 5px;
-  background-color: #272727 !important;
+  background-color: #59cb73 !important;
   color: white;
+  padding: 0 3%;
 }

@@ -4,6 +4,7 @@ const { authUser } = require('../utils/index')
 const {
   getAllUsers,
   getUserById,
+  getUserByName,
   getMe,
   editMe,
   // deleteMe,
@@ -24,6 +25,7 @@ const {
 router
   .get('/', getAllUsers)
   .get('/me', authUser, getMe)
+  .get('/me/:userName', authUser, getUserByName)
   .get('/:userId', authUser, getUserById)
   .put('/me', authUser, editMe)
   // .delete('/me', authUser, deleteMe)

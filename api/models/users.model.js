@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema({
     select: false
   },
   ratings: [{
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: rate
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'rate'
   }],
   finishedGames: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -37,12 +37,12 @@ const userSchema = new mongoose.Schema({
     ref: 'game'
   }],
   follows: [{
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: user
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user'
   }],
   followers: [{
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: user
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user'
   }],
   yourPlattforms: {
     steam: Boolean,

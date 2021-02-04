@@ -3,11 +3,13 @@ const mongoose = require('mongoose')
 const rateSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'user',
+    required: true
   },
   game: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'game'
+    ref: 'game',
+    required: true
   },
   rate: {
     type: Number,

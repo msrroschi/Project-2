@@ -127,7 +127,9 @@
 
     <!-- Tags Table -->
     <div class="container my-4" id="user-tab-table">
-      <ul class="nav nav-tabs small" id="myTab" role="tablist">
+
+      <!-- Tabs -->
+      <ul class="nav nav-tabs nav-justify fs-6" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <a class="nav-link active" id="finished-tab" data-bs-toggle="tab" href="#finished" role="tab" aria-controls="finished" aria-selected="true">Finished</a>
         </li>
@@ -138,10 +140,14 @@
           <a class="nav-link" id="favourites-tab" data-bs-toggle="tab" href="#favourites" role="tab" aria-controls="favourites" aria-selected="false">Favourites</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a class="nav-link" id="follows-tab" data-bs-toggle="tab" href="#follows" role="tab" aria-controls="follows" aria-selected="false">Follows</a>
+          <a class="nav-link" id="followers-tab" data-bs-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="false">Followers</a>
         </li>
       </ul>
+
+      <!-- Content -->
       <div class="tab-content" id="myTabContent">
+
+        <!-- Finished Table -->
         <div class="tab-pane fade show active" id="finished" role="tabpanel" aria-labelledby="finished-tab">
           <table class="table table-dark table-hover user-table" id="finished-table">
             <thead>
@@ -153,6 +159,8 @@
             </thead>
           </table>
         </div>
+
+        <!-- Pending Table -->
         <div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="pending-tab">
           <table class="table table-dark table-hover user-table" id="pending-table">
             <thead>
@@ -164,6 +172,8 @@
             </thead>
           </table>
         </div>
+        
+        <!-- Favourites Table -->
         <div class="tab-pane fade" id="favourites" role="tabpanel" aria-labelledby="favourites-tab">
           <table class="table table-dark table-hover user-table" id="favourites-table">
             <thead>
@@ -175,12 +185,14 @@
             </thead>
           </table>
         </div>
-        <div class="tab-pane fade" id="follows" role="tabpanel" aria-labelledby="follows-tab">
-          <table class="table table-dark table-hover user-table" id="follows-table">
+
+        <!-- Followers -->
+        <div class="tab-pane fade" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+          <table class="table table-dark table-hover user-table" id="followers-table">
             <thead>
               <tr>
-                <th id="follows-tablehead-enum">#</th>
-                <th id="follows-tablehead-name">Name</th>
+                <th id="followers-tablehead-enum">#</th>
+                <th id="followers-tablehead-name">Name</th>
               </tr>
             </thead>
           </table>
