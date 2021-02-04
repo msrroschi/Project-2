@@ -1,5 +1,5 @@
 const api = axios.create({
-  baseUrl: 'http://localhost:3000/api/',
+  baseURL: 'http://localhost:3000/api/',
   timeout: 1000
 })
 
@@ -35,17 +35,17 @@ window.onload = function() {
   }
 
   // Muestra todos los juegos
-  axios.get('http://localhost:3000/api/games')
-    .then(games => {
-      console.log(games.data)
-      generateGames(games.data)
-    })
+  api
+    .get('/games')
+      .then(games => {
+        generateGames(games.data)
+      })
     .catch(err => console.log(err))
 }
 
 // Game Browser
-axios
-  .get('http://localhost:3000/api/games')
+api
+  .get('/games')
   .then(games => {
     games.data.forEach((game, i) => {
       document.getElementById('main-browser-results').innerHTML += `
@@ -59,47 +59,44 @@ axios
 // Search Button
 document.getElementById('main-browser-btn').addEventListener('click', () => {
   const search = document.getElementById('main-browser').value
-  axios
-    .get('http://localhost:3000/api/games')
-    .then(game => {
-      window.location = `http://localhost:3000/game.html?game=${search}`
-    })
-    .catch(err => console.log(err))
+  localStorage.setItem('game', search)
+  window.location.href = 'game.html'
 })
 
 // Home Button
 document.getElementById('home-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/index.html'
+  window.location.href = 'index.html'
 })
 
 // Profile Button
 document.getElementById('profile-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/own.profile.html'
+  window.location.href='own.profile.html'
 })
 
 // Community Button
 document.getElementById('community-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/community.html'
+  window.location.href='community.html'
 })
 
 // Log In Button
 document.getElementById('login-btn').addEventListener('click', () => {
-  axios.post('http://localhost:3000/api/auth/login', {
-    email: document.getElementById('login-email').value,
-    password: document.getElementById('login-pass').value
-  })
-  .then(response => {
-    if (response.data && response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      window.location.reload()
-    } else {
+  api
+    .post('/auth/login', {
+      email: document.getElementById('login-email').value,
+      password: document.getElementById('login-pass').value
+    })
+    .then(response => {
+      if (response.data && response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        window.location.reload()
+      } else {
+        alert('Email or Password Wrong')
+      }
+    })
+    .catch(err => {
       alert('Email or Password Wrong')
-    }
+    })
   })
-  .catch(err => {
-    alert('Email or Password Wrong')
-  })
-})
 
 // Sign Up Button
 document.getElementById('signup-btn').addEventListener('click', () => {
@@ -110,7 +107,7 @@ document.getElementById('signup-btn').addEventListener('click', () => {
     pass.classList.remove('wrongPass')
     repeatedPass.classList.remove('wrongPass')
 
-    axios.post('http://localhost:3000/api/auth/signup', {
+    api.post('/auth/signup', {
       username: document.getElementById('signup-username').value,
       email: document.getElementById('signup-email').value,
       password: pass.value

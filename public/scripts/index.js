@@ -35,12 +35,8 @@ api
 // Search Button
 document.getElementById('main-browser-btn').addEventListener('click', () => {
   const search = document.getElementById('main-browser').value
-  api
-    .get('/games')
-    .then(game => {
-      window.location(`game.html?game=${search}`)
-    })
-    .catch(err => console.log(err))
+  localStorage.setItem('game', search)
+  window.location.href = 'game.html'
 })
 
 // Home Button

@@ -23,7 +23,7 @@ const {
 } = require('../controllers/users.controller')
 
 router
-  .get('/', getAllUsers)
+  .get('', getAllUsers)
   .get('/me', authUser, getMe)
   .get('/me/:userName', authUser, getUserByName)
   .get('/:userId', authUser, getUserById)

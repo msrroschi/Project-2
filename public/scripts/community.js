@@ -1,5 +1,5 @@
 const api = axios.create({
-  baseUrl: 'http://localhost:3000/api/',
+  baseURL: 'http://localhost:3000/api/',
   timeout: 1000
 })
 
@@ -34,7 +34,7 @@ window.onload = function() {
       document.getElementById(`viewProfile${i}`).addEventListener('click', () => {
         if (localStorage.token) {
           localStorage.setItem('userId', user._id)
-          window.location = 'http://localhost:3000/user.profile.html'
+          window.location.href = 'user.profile.html'
         } else {
           window.alert('You have to be logged in')
         }
@@ -43,7 +43,8 @@ window.onload = function() {
   }
 
   // Muestra todos los usuarios
-  axios.get('http://localhost:3000/api/users/')
+  api
+    .get('/users')
     .then(users => {
       generateCommunity(users.data)
     })
@@ -52,12 +53,12 @@ window.onload = function() {
 
 // Home Button
 document.getElementById('home-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/index.html'
+  window.location.href = 'index.html'
 })
 
 // Profile Button
 document.getElementById('profile-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/own.profile.html'
+  window.location.href = 'own.profile.html'
 })
 
 // Community Button
@@ -67,21 +68,22 @@ document.getElementById('community-btn').addEventListener('click', () => {
 
 // Log In Button
 document.getElementById('login-btn').addEventListener('click', () => {
-  axios.post('http://localhost:3000/api/auth/login', {
-    email: document.getElementById('login-email').value,
-    password: document.getElementById('login-pass').value
-  })
-  .then(response => {
-    if (response.data && response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      window.location.reload()
-    } else {
+  api
+    .post('/auth/login', {
+      email: document.getElementById('login-email').value,
+      password: document.getElementById('login-pass').value
+    })
+    .then(response => {
+      if (response.data && response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        window.location.reload()
+      } else {
+        alert('Email or Password Wrong')
+      }
+    })
+    .catch(err => {
       alert('Email or Password Wrong')
-    }
-  })
-  .catch(err => {
-    alert('Email or Password Wrong')
-  })
+    })
 })
 
 // Sign Up Button
@@ -93,16 +95,17 @@ document.getElementById('signup-btn').addEventListener('click', () => {
     pass.classList.remove('wrongPass')
     repeatedPass.classList.remove('wrongPass')
 
-    axios.post('http://localhost:3000/api/auth/signup', {
-      username: document.getElementById('signup-username').value,
-      email: document.getElementById('signup-email').value,
-      password: pass.value
-    })
-    .then(response => {
-      localStorage.setItem('token', response.data.token)
-      window.location.reload()
-    })
-    .catch(err => console.log(err))
+    api
+      .post('/signup', {
+        username: document.getElementById('signup-username').value,
+        email: document.getElementById('signup-email').value,
+        password: pass.value
+      })
+      .then(response => {
+        localStorage.setItem('token', response.data.token)
+        window.location.reload()
+      })
+      .catch(err => console.log(err))
   } else {
     pass.classList.add('wrongPass')
     repeatedPass.classList.add('wrongPass')

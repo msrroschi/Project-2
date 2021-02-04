@@ -1,11 +1,10 @@
 const api = axios.create({
-  baseUrl: 'http://localhost:3000/api/',
+  baseURL: 'http://localhost:3000/api/',
   timeout: 1000
 })
 
-// const { default: axios } = require("axios");
-
-const urlParams = new URLSearchParams(window.location.search);
+const urlParams = localStorage.game
+console.log(urlParams)
 
 let globalGame = {}
 
@@ -24,8 +23,8 @@ window.onload = () => {
     document.getElementById('profile-btn').style.display = "none"
   }
 
-  axios
-    .get(`http://localhost:3000/api/games/${urlParams.get('game')}`)
+  api
+    .get(`/games/${urlParams}`)
     .then(game => {
       
       globalGame = game.data
@@ -40,22 +39,31 @@ window.onload = () => {
 
       // Add Buttons
       if (localStorage.token) {
-        axios
-          .get('http://localhost:3000/api/users/me', {
+        console.log('entra en add button')
+        api
+          .get('/users/me', {
             headers: {
               token: localStorage.token
             }
           })
           .then(me => {
-            if (me.data.finishedGames.includes(game.data._id)) {
+            console.log(me.data)
+            const finishedIds = []
+            me.data.finishedGames.forEach(game => finishedIds.push(game._id))
+            const pendingIds = []
+            me.data.pendingGames.forEach(game => pendingIds.push(game._id))
+            const favouritesIds = []
+            me.data.favouriteGames.forEach(game => favouritesIds.push(game._id))
+            
+            if (finishedIds.includes(game.data._id)) {
               document.getElementById('finished-button').classList.remove('btn-outline-dark')
               document.getElementById('finished-button').classList.add('btn-dark')
             }
-            if (me.data.pendingGames.includes(game.data._id)) {
+            if (pendingIds.includes(game.data._id)) {
               document.getElementById('pending-button').classList.remove('btn-outline-dark')
               document.getElementById('pending-button').classList.add('btn-dark')
             }
-            if (me.data.favouriteGames.includes(game.data._id)) {
+            if (favouritesIds.includes(game.data._id)) {
               document.getElementById('favourites-button').classList.remove('btn-outline-dark')
               document.getElementById('favourites-button').classList.add('btn-dark')
             }
@@ -64,10 +72,9 @@ window.onload = () => {
       }
 
       // Game Rating and Popularity
-      axios
-        .get('http://localhost:3000/api/users')
+      api
+        .get('/users')
         .then(users => {
-          console.log(game.data)
           let rate = 0
           let usersWhoRated = 0
           let popularity = 0
@@ -78,11 +85,9 @@ window.onload = () => {
                 usersWhoRated++
               }
             })
-            console.log(user.finishedGames)
             user.finishedGames.forEach(gameId => {
               if (gameId === game.data._id) popularity++
             })
-            console.log(user.pendingGames)
             user.pendingGames.forEach(gameId => {
               if (gameId === game.data._id) popularity++
             })
@@ -116,14 +121,14 @@ window.onload = () => {
 }
 
 // Game Browser
-axios
-  .get('http://localhost:3000/api/games')
+api
+  .get('/games')
   .then(games => {
     games.data.forEach((game, i) => {
       document.getElementById('main-browser-results').innerHTML += `
       <option value="${game.name}" id="${game._id}"></option>
       `
-      // if (i < 10) console.log(game.name)
+      if (i < 10) console.log(game.name)
     })
   })
   .catch(err => console.log(err))
@@ -131,47 +136,48 @@ axios
 // Search Button
 document.getElementById('main-browser-btn').addEventListener('click', () => {
   const search = document.getElementById('main-browser').value
-  axios
-    .get('http://localhost:3000/api/games')
-    .then(game => {
-      window.location = `http://localhost:3000/game.html?game=${search}`
-    })
-    .catch(err => console.log(err))
+  localStorage.removeItem('game')
+  localStorage.setItem('game', search)
+  window.location.href = 'game.html'
 })
 
 // Home Button
 document.getElementById('home-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/index.html'
+  localStorage.removeItem('game')
+  window.location.href = 'index.html'
 })
 
 // Profile Button
 document.getElementById('profile-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/own.profile.html'
+  localStorage.removeItem('game')
+  window.location.href='own.profile.html'
 })
 
 // Community Button
 document.getElementById('community-btn').addEventListener('click', () => {
-  window.location = 'http://localhost:3000/community.html'
+  localStorage.removeItem('game')
+  window.location.href='community.html'
 })
 
 // Log In Button
 document.getElementById('login-btn').addEventListener('click', () => {
-  axios.post('http://localhost:3000/api/auth/login', {
-    email: document.getElementById('login-email').value,
-    password: document.getElementById('login-pass').value
-  })
-  .then(response => {
-    if (response.data && response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      window.location.reload()
-    } else {
+  api
+    .post('/auth/login', {
+      email: document.getElementById('login-email').value,
+      password: document.getElementById('login-pass').value
+    })
+    .then(response => {
+      if (response.data && response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        window.location.reload()
+      } else {
+        alert('Email or Password Wrong')
+      }
+    })
+    .catch(err => {
       alert('Email or Password Wrong')
-    }
+    })
   })
-  .catch(err => {
-    alert('Email or Password Wrong')
-  })
-})
 
 // Sign Up Button
 document.getElementById('signup-btn').addEventListener('click', () => {
@@ -182,7 +188,7 @@ document.getElementById('signup-btn').addEventListener('click', () => {
     pass.classList.remove('wrongPass')
     repeatedPass.classList.remove('wrongPass')
 
-    axios.post('http://localhost:3000/api/auth/signup', {
+    api.post('/auth/signup', {
       username: document.getElementById('signup-username').value,
       email: document.getElementById('signup-email').value,
       password: pass.value
@@ -200,17 +206,17 @@ document.getElementById('signup-btn').addEventListener('click', () => {
 
 // Log Out Button
 document.getElementById('logout-btn').addEventListener('click', () => {
-  window.localStorage.clear()
+  window.localStorage.removeItem('token')
   window.location.reload()
 })
 
 // Add to Finished
 document.getElementById('finished-button').addEventListener('click', () => {
-  axios
-    .get(`http://localhost:3000/api/games/${urlParams.get('game')}`)
+  api
+    .get(`/games/${urlParams}`)
     .then(game => {
-      axios
-        .post(`http://localhost:3000/api/users/me/finished/${game.data._id}`, {}, {
+      api
+        .post(`/users/me/finished/${game.data._id}`, {}, {
           headers: {
             token: localStorage.token
           }
@@ -229,11 +235,11 @@ document.getElementById('finished-button').addEventListener('click', () => {
 
 // Add to Pending
 document.getElementById('pending-button').addEventListener('click', () => {
-  axios
-    .get(`http://localhost:3000/api/games/${urlParams.get('game')}`)
+  api
+    .get(`/games/${urlParams}`)
     .then(game => {
-      axios
-        .post(`http://localhost:3000/api/users/me/pending/${game.data._id}`, {}, {
+      api
+        .post(`/users/me/pending/${game.data._id}`, {}, {
           headers: {
             token: localStorage.token
           }
@@ -252,11 +258,11 @@ document.getElementById('pending-button').addEventListener('click', () => {
 
 // Add to Favourites
 document.getElementById('favourites-button').addEventListener('click', () => {
-  axios
-    .get(`http://localhost:3000/api/games/${urlParams.get('game')}`)
+  api
+    .get(`/games/${urlParams}`)
     .then(game => {
-      axios
-        .post(`http://localhost:3000/api/users/me/favourites/${game.data._id}`, {}, {
+      api
+        .post(`/users/me/favourites/${game.data._id}`, {}, {
           headers: {
             token: localStorage.token
           }
@@ -278,8 +284,8 @@ document.getElementById('rate-modal-btn').addEventListener('click', () => {
   const score = document.getElementById('ex9').value
   const comment = document.getElementById('rate-comment').value
   
-  axios
-    .post(`http://localhost:3000/api/rates/me`, {
+  api
+    .post(`/rates/me`, {
       game: globalGame._id,
       rate: score,
       comment: comment
