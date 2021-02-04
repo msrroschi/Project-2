@@ -53,7 +53,7 @@ window.onload = function() {
         // Create Name
         let fiNameTd = document.createElement('td')
         fiNameTd.innerHTML = `
-        <a id ="fiGame${i}" href="http://localhost:3000/game.html">${game.name}</a>
+        <a id ="fiGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
         `
         fiNameTd.classList.add(`name${i}`)
         fiTr.appendChild(fiNameTd)
@@ -89,7 +89,7 @@ window.onload = function() {
         // Create Name
         let peNameTd = document.createElement('td')
         peNameTd.innerHTML = `
-        <a id ="peGame${i}" href="http://localhost:3000/game.html">${game.name}</a>
+        <a id ="peGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
         `
         peNameTd.classList.add(`name${i}`)
         peTr.appendChild(peNameTd)
@@ -124,7 +124,7 @@ window.onload = function() {
         // Create Name
         let faNameTd = document.createElement('td')
         faNameTd.innerHTML = `
-        <a id ="faGame${i}" href="http://localhost:3000/game.html">${game.name}</a>
+        <a id ="faGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
         `
         faNameTd.classList.add(`name${i}`)
         faTr.appendChild(faNameTd)
