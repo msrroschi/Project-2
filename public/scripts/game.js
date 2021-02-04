@@ -39,7 +39,6 @@ window.onload = () => {
 
       // Add Buttons
       if (localStorage.token) {
-        console.log('entra en add button')
         api
           .get('/users/me', {
             headers: {
@@ -269,7 +268,6 @@ document.getElementById('favourites-button').addEventListener('click', () => {
         })
         .then(resolve => {
           location.reload()
-          console.log(resolve.data)
         })
         .catch(err => {
           window.alert('Something went wrong')
