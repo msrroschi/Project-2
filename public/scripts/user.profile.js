@@ -1,7 +1,7 @@
 const api = axios.create({
-  // baseURL: 'http://localhost:3000/api/',
-  baseURL: 'https://tyg-app.herokuapp.com/api',
-  timeout: 2000
+  baseURL: 'http://localhost:3000/api',
+  // baseURL: 'https://tyg-app.herokuapp.com/api',
+  timeout: 3000
 })
 
 window.onload = function() {
@@ -53,15 +53,16 @@ window.onload = function() {
         // Create Name
         let fiNameTd = document.createElement('td')
         fiNameTd.innerHTML = `
-        <a id ="fiGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
+        <a id ="fiGame${i}" href="game.html">${game.name}</a>
         `
         fiNameTd.classList.add(`name${i}`)
         fiTr.appendChild(fiNameTd)
 
-        // Create Rate
+        // Create Rates
         let fiRateTd = document.createElement('td')
-        fiRateTd.innerText = 'hola'
         fiRateTd.classList.add(`rate${i}`)
+        const gameRate = user.data.ratings.filter(rate => rate.game === game._id)
+        fiRateTd.innerText = gameRate.length ? gameRate[0].rate : ""
         fiTr.appendChild(fiRateTd)
 
         fiTbody.appendChild(fiTr)
@@ -89,15 +90,16 @@ window.onload = function() {
         // Create Name
         let peNameTd = document.createElement('td')
         peNameTd.innerHTML = `
-        <a id ="peGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
+        <a id ="peGame${i}" href="game.html">${game.name}</a>
         `
         peNameTd.classList.add(`name${i}`)
         peTr.appendChild(peNameTd)
 
-        // Create Rate
+        // Create Rates
         let peRateTd = document.createElement('td')
-        peRateTd.innerText = 'hola'
         peRateTd.classList.add(`rate${i}`)
+        const gameRate = user.data.ratings.filter(rate => rate.game === game._id)
+        peRateTd.innerText = gameRate.length ? gameRate[0].rate : ""
         peTr.appendChild(peRateTd)
 
         peTbody.appendChild(peTr)
@@ -124,15 +126,16 @@ window.onload = function() {
         // Create Name
         let faNameTd = document.createElement('td')
         faNameTd.innerHTML = `
-        <a id ="faGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
+        <a id ="faGame${i}" href="game.html">${game.name}</a>
         `
         faNameTd.classList.add(`name${i}`)
         faTr.appendChild(faNameTd)
 
-        // Create Rate
+        // Create Rates
         let faRateTd = document.createElement('td')
-        faRateTd.innerText = 'hola'
         faRateTd.classList.add(`rate${i}`)
+        const gameRate = user.data.ratings.filter(rate => rate.game === game._id)
+        faRateTd.innerText = gameRate.length ? gameRate[0].rate : ""
         faTr.appendChild(faRateTd)
 
         faTbody.appendChild(faTr)
@@ -182,6 +185,37 @@ window.onload = function() {
           window.location.href = 'user.profile.html'
         })
       })
+
+      // Follow Button
+      let followBtn = document.getElementById('follow-btn')
+      api
+        .get('/users/me', {
+          headers: {
+            token: localStorage.token
+          }
+        })
+        .then(me => {
+          let follows = []
+          me.data.follows.forEach(follow => follows.push(follow._id))
+          if (follows.includes(user.data._id)) {
+            followBtn.classList.remove('btn-outline-primary')
+            followBtn.classList.add('btn-primary')
+          }
+        })
+
+      followBtn.addEventListener('click', () => {
+        api
+          .post(`/users/me/${userId}`, {}, {
+            headers: {
+              token: localStorage.token
+            }
+          })
+          .then(follows => {
+            window.alert(`You are now following ${user.data.username}`)
+            // window.location.reload()
+          })
+          .catch(err => console.log(err))
+      })
     })
     .catch(err => {console.log(err)})
 }
@@ -218,7 +252,11 @@ document.getElementById('profile-btn').addEventListener('click', () => {
 
 // Community Button
 document.getElementById('community-btn').addEventListener('click', () => {
-  window.location.href='community.html'
+  if (localStorage.token) {
+    window.location.href='community.html'
+  } else {
+    window.alert('You must be logged in')
+  }
 })
 
 // Log In Button

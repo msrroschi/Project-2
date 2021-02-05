@@ -1,6 +1,7 @@
 const userModel = require('../models/users.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { handleError } = require('../utils/index')
 
 function signUp (req, res) {
   if (req.body && req.body.password) {

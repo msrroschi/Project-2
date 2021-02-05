@@ -1,6 +1,6 @@
 const api = axios.create({
-  // baseURL: 'http://localhost:3000/api/',
-  baseURL: 'https://tyg-app.herokuapp.com/api',
+  baseURL: 'http://localhost:3000/api',
+  // baseURL: 'https://tyg-app.herokuapp.com/api',
   timeout: 2000
 })
 
@@ -19,27 +19,30 @@ window.onload = function() {
     document.getElementById('profile-btn').style.display = "none"
   }
 
-  function generateCommunity(users) {
+  function generateCommunity(users, me) {
     users.forEach((user, i) => {
-      let userHtml = document.createElement('div')
-      userHtml.innerHTML = 
-      `<ul class="list-group list-group-horizontal">
-        <li class="list-group-item">${user.username}</li>
-        <li class="list-group-item">
-          <button type="button" class="btn btn-primary" id="viewProfile${i}">View Profile</button>
-        </li>
-      </ul>`
-      
-      document.body.appendChild(userHtml)
-      
-      document.getElementById(`viewProfile${i}`).addEventListener('click', () => {
-        if (localStorage.token) {
-          localStorage.setItem('userId', user._id)
-          window.location.href = 'user.profile.html'
-        } else {
-          window.alert('You have to be logged in')
-        }
-      })
+      if (!(localStorage.token && user._id === me._id)) {
+        let userHtml = document.createElement('div')
+        userHtml.classList.add('container')
+        userHtml.innerHTML = 
+        `<ul class="list-group list-group-horizontal">
+          <li class="list-group-item col-6">${user.username}</li>
+          <li class="list-group-item col-6">
+            <button type="button" class="btn btn-primary" id="viewProfile${i}">View Profile</button>
+          </li>
+        </ul>`
+        
+        document.body.appendChild(userHtml)
+        
+        document.getElementById(`viewProfile${i}`).addEventListener('click', () => {
+          if (localStorage.token) {
+            localStorage.setItem('userId', user._id)
+            window.location.href = 'user.profile.html'
+          } else {
+            window.alert('You have to be logged in')
+          }
+        })
+      }
     })
   }
 
@@ -47,10 +50,36 @@ window.onload = function() {
   api
     .get('/users')
     .then(users => {
-      generateCommunity(users.data)
-    })
-    .catch(err => console.log(err))
+      api
+        .get('/users/me', {
+          headers: {
+            token: localStorage.token
+          }
+        })
+        .then(me => generateCommunity(users.data, me.data))})
+        .catch(err => console.log(err))
 }
+
+// Game Browser
+api
+  .get('/games')
+  .then(games => {
+    games.data.forEach((game, i) => {
+      document.getElementById('main-browser-results').innerHTML += `
+      <option value="${game.name}" id="${game._id}"></option>
+      `
+      if (i < 10) console.log(game.name)
+    })
+  })
+  .catch(err => console.log(err))
+
+// Search Button
+document.getElementById('main-browser-btn').addEventListener('click', () => {
+  const search = document.getElementById('main-browser').value
+  localStorage.removeItem('game')
+  localStorage.setItem('game', search)
+  window.location.href = 'game.html'
+})
 
 // Home Button
 document.getElementById('home-btn').addEventListener('click', () => {

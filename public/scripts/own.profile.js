@@ -1,6 +1,6 @@
 const api = axios.create({
-  // baseURL: 'http://localhost:3000/api/',
-  baseURL: 'https://tyg-app.herokuapp.com/api',
+  baseURL: 'http://localhost:3000/api',
+  // baseURL: 'https://tyg-app.herokuapp.com/api',
   timeout: 2000
 })
 
@@ -49,21 +49,47 @@ window.onload = function() {
         // Create Name
         let fiNameTd = document.createElement('td')
         fiNameTd.innerHTML = `
-        <a id ="fiGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
+        <a id ="fiGame${i}" href="game.html">${game.name}</a>
         `
         fiNameTd.classList.add(`name${i}`)
         fiTr.appendChild(fiNameTd)
 
-        // Create Rate
+        // Create Rates
         let fiRateTd = document.createElement('td')
-        fiRateTd.innerText = 'hola'
-        fiRateTd.classList.add(`rate${i}`)
+        fiRateTd.classList.add(`rate${i}`, 'text-center')
+        const gameRate = me.data.ratings.filter(rate => rate.game === game._id)
+        fiRateTd.innerText = gameRate.length ? gameRate[0].rate : ""
         fiTr.appendChild(fiRateTd)
+
+        // Delete button
+        let fiDeleteTd = document.createElement('td')
+        fiDeleteTd.classList.add(`fiDeleteButton${i}`)
+        fiDeleteTd.innerHTML += `
+          <button type="button" class="close btn-danger" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        `
+        fiTr.appendChild(fiDeleteTd)
 
         fiTbody.appendChild(fiTr)
 
         document.getElementById(`fiGame${i}`).addEventListener('click', () => {
           localStorage.setItem('game', game.name)
+        })
+
+        console.log()
+        document.querySelector(`.fiDeleteButton${i} button`).addEventListener('click', () => {
+          api
+            .delete(`/users/me/finished/${game._id}`, {
+              headers: {
+                token: localStorage.token
+              }
+            })
+            .then(finished => {
+              console.log(finished)
+              window.location.reload()
+            })
+            .catch(err => console.log(err))
         })
       })
 
@@ -85,21 +111,46 @@ window.onload = function() {
         // Create Name
         let peNameTd = document.createElement('td')
         peNameTd.innerHTML = `
-        <a id ="peGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
+        <a id ="peGame${i}" href="game.html">${game.name}</a>
         `
         peNameTd.classList.add(`name${i}`)
         peTr.appendChild(peNameTd)
 
-        // Create Rate
+        // Create Rates
         let peRateTd = document.createElement('td')
-        peRateTd.innerText = 'hola'
-        peRateTd.classList.add(`rate${i}`)
+        peRateTd.classList.add(`rate${i}`, 'text-center')
+        const gameRate = me.data.ratings.filter(rate => rate.game === game._id)
+        peRateTd.innerText = gameRate.length ? gameRate[0].rate : ""
         peTr.appendChild(peRateTd)
+
+        // Delete button
+        let peDeleteTd = document.createElement('td')
+        peDeleteTd.classList.add(`peDeleteButton${i}`)
+        peDeleteTd.innerHTML += `
+          <button type="button" class="close btn-danger" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        `
+        peTr.appendChild(peDeleteTd)
 
         peTbody.appendChild(peTr)
 
         document.getElementById(`peGame${i}`).addEventListener('click', () => {
           localStorage.setItem('game', game.name)
+        })
+
+        document.querySelector(`.peDeleteButton${i} button`).addEventListener('click', () => {
+          api
+            .delete(`/users/me/pending/${game._id}`, {
+              headers: {
+                token: localStorage.token
+              }
+            })
+            .then(pending => {
+              console.log(pending)
+              window.location.reload()
+            })
+            .catch(err => console.log(err))
         })
       })
 
@@ -120,21 +171,46 @@ window.onload = function() {
         // Create Name
         let faNameTd = document.createElement('td')
         faNameTd.innerHTML = `
-        <a id ="faGame${i}" href="https://tyg-app.herokuapp.com/game.html">${game.name}</a>
+        <a id ="faGame${i}" href="game.html">${game.name}</a>
         `
         faNameTd.classList.add(`name${i}`)
         faTr.appendChild(faNameTd)
 
-        // Create Rate
+        // Create Rates
         let faRateTd = document.createElement('td')
-        faRateTd.innerText = 'hola'
-        faRateTd.classList.add(`rate${i}`)
+        faRateTd.classList.add(`rate${i}`, 'text-center')
+        const gameRate = me.data.ratings.filter(rate => rate.game === game._id)
+        faRateTd.innerText = gameRate.length ? gameRate[0].rate : ""
         faTr.appendChild(faRateTd)
+
+        // Delete button
+        let faDeleteTd = document.createElement('td')
+        faDeleteTd.classList.add(`faDeleteButton${i}`)
+        faDeleteTd.innerHTML += `
+          <button type="button" class="close btn-danger" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        `
+        faTr.appendChild(faDeleteTd)
 
         faTbody.appendChild(faTr)
 
         document.getElementById(`faGame${i}`).addEventListener('click', () => {
           localStorage.setItem('game', game.name)
+        })
+
+        document.querySelector(`.faDeleteButton${i} button`).addEventListener('click', () => {
+          api
+            .delete(`/users/me/favourites/${game._id}`, {
+              headers: {
+                token: localStorage.token
+              }
+            })
+            .then(favourites => {
+              console.log(favourites)
+              window.location.reload()
+            })
+            .catch(err => console.log(err))
         })
       })
 
@@ -146,7 +222,7 @@ window.onload = function() {
       document.getElementById('total-entries-table').innerText = me.data.finishedGames.length + me.data.pendingGames.length
 
       // Create Follows Table
-      let followsTbody = document.querySelector('#follows-accordion-table tbody')
+      let followsTbody = document.querySelector('#follows-pills-table tbody')
 
       me.data.follows.forEach((follow, i)=> {
 
@@ -161,7 +237,7 @@ window.onload = function() {
 
         // Create Name
         let followNameTd = document.createElement('td')
-        followNameTd.innerText = folow.username
+        followNameTd.innerText = follow.username
         followNameTd.classList.add(`name${i}`)
         followTr.appendChild(followNameTd)
 
@@ -173,7 +249,14 @@ window.onload = function() {
         followTr.appendChild(followViewProfileButtonTd)
         
         // Create Delete Follow Button
-        //
+        let followDeleteBtn = document.createElement('td')
+        followDeleteBtn.classList.add(`follow-delete-button${i}`)
+        followDeleteBtn.innerHTML = `
+        <button type="button" class="close btn-danger" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        `
+        followTr.appendChild(followDeleteBtn)
         
         followsTbody.appendChild(followTr)
         
@@ -181,10 +264,21 @@ window.onload = function() {
           localStorage.setItem('userId', follow._id)
           window.location.href = 'user.profile.html'
         })
+
+        document.querySelector(`.follow-delete-button${i} button`).addEventListener('click', () => {
+          api
+            .delete(`/users/me/${follow._id}`, {
+              headers: {
+                token: localStorage.token
+              }
+            })
+            .then(follows => window.location.reload())
+            .catch(err => console.log(err))
+        })
       })
 
       // Create Followers Table
-      let followersTbody = document.querySelector('#followers-accordion-table tbody')
+      let followersTbody = document.querySelector('#followers-pills-table tbody')
 
       me.data.followers.forEach((follower, i)=> {
 
@@ -256,7 +350,11 @@ document.getElementById('profile-btn').addEventListener('click', () => {
 
 // Community Button
 document.getElementById('community-btn').addEventListener('click', () => {
-  window.location.href='community.html'
+  if (localStorage.token) {
+    window.location.href='community.html'
+  } else {
+    window.alert('You must be logged in')
+  }
 })
 
 // Log In Button
@@ -307,5 +405,5 @@ document.getElementById('signup-btn').addEventListener('click', () => {
 // Log Out Button
 document.getElementById('logout-btn').addEventListener('click', () => {
   window.localStorage.clear()
-  window.location.reload()
+  window.location.href = 'index.html'
 })

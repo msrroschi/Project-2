@@ -12,8 +12,8 @@ negro navbar => #272727
 
 #user-name {
   font-weight: 800;
-  font-size: xx-large;
-  width: 100%;
+  font-size: x-large;
+  /* width: 100%; */
   height: 40px;
   text-align: center;
   color: #fcfefd;

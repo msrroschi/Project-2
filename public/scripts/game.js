@@ -1,6 +1,6 @@
 const api = axios.create({
-  // baseURL: 'http://localhost:3000/api/',
-  baseURL: 'https://tyg-app.herokuapp.com/api',
+  baseURL: 'http://localhost:3000/api',
+  // baseURL: 'https://tyg-app.herokuapp.com/api',
   timeout: 2000
 })
 
@@ -92,7 +92,7 @@ window.onload = () => {
               if (gameId === game.data._id) popularity++
             })
           })
-          let avgRate = rate/usersWhoRated
+          let avgRate = (rate/usersWhoRated).toFixed(2)
           document.querySelector('#rating-number h2').innerText = avgRate
           document.querySelector('#popularity-number h2').innerText = popularity
         })
@@ -155,8 +155,11 @@ document.getElementById('profile-btn').addEventListener('click', () => {
 
 // Community Button
 document.getElementById('community-btn').addEventListener('click', () => {
-  localStorage.removeItem('game')
-  window.location.href='community.html'
+  if (localStorage.token) {
+    window.location.href='community.html'
+  } else {
+    window.alert('You must be logged in')
+  }
 })
 
 // Log In Button

@@ -114,7 +114,7 @@ function deleteFromFollows(req, res) {
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
-      user.follows.splice(user.follows.indexOf(req.params.userId))
+      user.follows.splice(user.follows.indexOf(mongoose.Types.ObjectId(req.params.userId)), 1)
       user.save(err => {
         if (err) res.status(500).send('Change not saved')
         userModel
@@ -147,10 +147,12 @@ function addGameToFinished(req, res) {
       user.finishedGames.push(req.params.gameId)
       user.save(err => {
         if (err) res.status(500).send('Change not saved')
-        user.pendingGames.splice(user.pendingGames.indexOf(req.params.gameId), 1)
-        user.save(err => {
-          if (err) res.status(500).send('Change not saved')
-        })
+        if (user.pendingGames.includes(mongoose.Types.ObjectId(req.params.gameId))) {
+          user.pendingGames.splice(user.pendingGames.indexOf(req.params.gameId), 1)
+          user.save(err => {
+            if (err) res.status(500).send('Change not saved')
+          })
+        }
         res.json(user.finishedGames)
       })
     })
@@ -158,6 +160,7 @@ function addGameToFinished(req, res) {
 }
 
 function deleteGameFromFinished(req, res) {
+  console.log('req>>>>>>>>>>>: ' + req)
   userModel
   .findOne({ email: res.locals.user.email })
   .then(user => {
@@ -190,10 +193,12 @@ function addGameToPending(req, res) {
       user.pendingGames.push(mongoose.Types.ObjectId(req.params.gameId))
       user.save(err => {
         if (err) res.status(500).send('Change not saved')
-        user.finishedGames.splice(user.finishedGames.indexOf(req.params.gameId), 1)
-        user.save(err => {
-          if (err) res.status(500).send('Change not saved')
-        })
+        if (user.finishedGames.includes(mongoose.Types.ObjectId(req.params.gameId))) {
+          user.finishedGames.splice(user.finishedGames.indexOf(req.params.gameId), 1)
+          user.save(err => {
+            if (err) res.status(500).send('Change not saved')
+          })
+        }
         res.json(user.pendingGames)
       })
     })

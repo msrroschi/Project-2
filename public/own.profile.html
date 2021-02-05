@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <form class="d-flex">
-          <input class="form-control me-2" list="main-browser-results" type="search" placeholder="Search" aria-label="Search" id="main-browser">
+          <input class="form-control me-2" list="main-browser-results" type="search" placeholder="Search games" aria-label="Search" id="main-browser" autocomplete="off">
           <button class="btn btn-outline-light" type="button" id="main-browser-btn">Search</button>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -156,6 +156,7 @@
                 <th id="finished-tablehead-index">#</th>
                 <th id="finished-tablehead-name">Name</th>
                 <th id="finished-tablehead-rating">Rating</th>
+                <th></th>
               </tr>
             </thead>
           </table>
@@ -169,6 +170,7 @@
                 <th id="pending-tablehead-enum">#</th>
                 <th id="pending-tablehead-name">Name</th>
                 <th id="pending-tablehead-rating">Rating</th>
+                <th></th>
               </tr>
             </thead>
           </table>
@@ -182,6 +184,7 @@
                 <th id="favourites-tablehead-enum">#</th>
                 <th id="favourites-tablehead-name">Name</th>
                 <th id="favourites-tablehead-rating">Rating</th>
+                <th></th>
               </tr>
             </thead>
           </table>
@@ -192,7 +195,7 @@
           <table class="table table-dark table-hover user-table" id="account-table">
             <thead>
               <tr>
-                <th id="account-tablehead-name">Account</th>
+                <th id="account-tablehead-name" colspan="2">Account</th>
               </tr>
             </thead>
             <tbody>
@@ -211,43 +214,39 @@
 
               <!-- Follows and Followers Accordion -->
               <tr>
-                <td id="follows-accordion-table">
-                  <div class="accordion" id="follows-followers-accordion">
-
-                    <!-- Follows Accordion Item -->
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="follows-accordion">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#follows-accordion-content" aria-expanded="true" aria-controls="follows-accordion-content">
-                          Follows
-                        </button>
-                      </h2>
-                      <div id="follows-accordion-content" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#follows-followers-accordion">
-                        <div class="accordion-body">
-                          <table id="follows-accordion-table">
-                            <tbody>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                <td id="follows-followers-pills" colspan="2" class="p-2">
+                  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link active" id="follows-pills-tab" data-bs-toggle="pill" href="#follows-pills" role="tab" aria-controls="follows-pills" aria-selected="true">Follows</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link" id="followers-pills-tab" data-bs-toggle="pill" href="#followers-pills" role="tab" aria-controls="followers-pills" aria-selected="false">Followers</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="follows-pills" role="tabpanel" aria-labelledby="follows-pills-tab">
+                      <table id="follows-pills-table" class="table table-dark table-hover user-table">
+                        <thead>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th></th>
+                          <th></th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
                     </div>
-
-                    <!-- Followers Accordion Item -->
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="followers-accordion">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#followers-accordion-content" aria-expanded="false" aria-controls="followers-accordion-content">
-                          Followers
-                        </button>
-                      </h2>
-                      <div id="followers-accordion-content" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#follows-followers-accordion">
-                        <div class="accordion-body">
-                          <table id="followers-accordion-table">
-                            <tbody>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
+                    <div class="tab-pane fade" id="followers-pills" role="tabpanel" aria-labelledby="followers-pills-tab">
+                      <table id="followers-pills-table" class="table table-dark table-hover user-table">
+                        <thead>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th></th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
                     </div>
-                    <!--  -->
                   </div>
                 </td>
               </tr>

@@ -12,10 +12,10 @@
 <body>
   <div class="container-fluid">
     <!-- NavBar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark mb-4">
       <div class="container-fluid">
         <form class="d-flex">
-          <input class="form-control me-2" type="search" list="main-browser-results" placeholder="Search" aria-label="Search" id="main-browser">
+          <input class="form-control me-2" type="search" list="main-browser-results" placeholder="Search games" aria-label="Search" id="main-browser" autocomplete="off">
           <button class="btn btn-outline-light" type="submit" id='main-browser-btn'>Search</button>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -120,16 +120,23 @@
       </div>
     </div>
 
-    <!-- Username -->
-    <div id="user-name"  class="my-3">
-      <h1></h1>
+    <!-- Username and Follow Button -->
+    <div class="container">
+      <div class="row">
+        <div id="user-name"  class="my-3 col-6">
+          <h1></h1>
+        </div>
+        <div class="col-6 d-flex justify-content-center align-items-center">
+          <button type="button" class="btn btn-outline-primary" id="follow-btn">Follow</button>
+        </div>
+      </div>
     </div>
 
     <!-- Tags Table -->
     <div class="container my-4" id="user-tab-table">
 
       <!-- Tabs -->
-      <ul class="nav nav-tabs nav-justify fs-6" id="myTab" role="tablist">
+      <ul class="nav nav-tabs nav-justify small" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <a class="nav-link active" id="finished-tab" data-bs-toggle="tab" href="#finished" role="tab" aria-controls="finished" aria-selected="true">Finished</a>
         </li>
@@ -140,7 +147,7 @@
           <a class="nav-link" id="favourites-tab" data-bs-toggle="tab" href="#favourites" role="tab" aria-controls="favourites" aria-selected="false">Favourites</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a class="nav-link" id="followers-tab" data-bs-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="false">Followers</a>
+          <a class="nav-link" id="followers-tab" data-bs-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="false">Follows</a>
         </li>
       </ul>
 
@@ -192,7 +199,7 @@
             <thead>
               <tr>
                 <th id="followers-tablehead-enum">#</th>
-                <th id="followers-tablehead-name">Name</th>
+                <th id="followers-tablehead-name" colspan="2">Name</th>
               </tr>
             </thead>
           </table>

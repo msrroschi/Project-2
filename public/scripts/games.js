@@ -1,6 +1,6 @@
 const api = axios.create({
-  // baseURL: 'http://localhost:3000/api/',
-  baseURL: 'https://tyg-app.herokuapp.com/api',
+  baseURL: 'http://localhost:3000/api',
+  // baseURL: 'https://tyg-app.herokuapp.com/api',
   timeout: 2000
 })
 
@@ -76,7 +76,11 @@ document.getElementById('profile-btn').addEventListener('click', () => {
 
 // Community Button
 document.getElementById('community-btn').addEventListener('click', () => {
-  window.location.href='community.html'
+  if (localStorage.token) {
+    window.location.href='community.html'
+  } else {
+    window.alert('You must be logged in')
+  }
 })
 
 // Log In Button
