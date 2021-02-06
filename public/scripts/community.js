@@ -126,7 +126,7 @@ document.getElementById('signup-btn').addEventListener('click', () => {
     repeatedPass.classList.remove('wrongPass')
 
     api
-      .post('/signup', {
+      .post('/auth/signup', {
         username: document.getElementById('signup-username').value,
         email: document.getElementById('signup-email').value,
         password: pass.value
