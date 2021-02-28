@@ -14,11 +14,12 @@ const gameSchema = new mongoose.Schema({
     type: Date
   },
   popularity: {
-    type: Number
+    type: Number,
+    default: 0
   },
   comments: [{
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: rate
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'rate'
   }],
   image: {
     type: String

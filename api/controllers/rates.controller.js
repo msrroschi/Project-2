@@ -1,5 +1,6 @@
 const rateModel = require('../models/rates.model')
 const userModel = require('../models/users.model')
+const gameModel = require('../models/games.model')
 const { handleError } = require('../utils/index')
 
 function postRate(req, res) {
@@ -18,8 +19,16 @@ function postRate(req, res) {
           user.save(err => {
             if (err) res.status(500).send('Change not saved')
           })
+          gameModel
+            .findById(req.body.game)
+            .then(game => {
+              game.comments.push(rate._id)
+              game.save(err => {
+                if (err) res.status(500).send('Change not saved')
+                res.json(rate)
+              })
+            })
         })
-      res.json(rate)
     })
     .catch(err => handleError(err, res))
 }

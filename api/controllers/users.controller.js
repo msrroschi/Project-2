@@ -1,4 +1,5 @@
 const userModel = require('../models/users.model')
+const gameModel = require('../models/games.model')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const { handleError } = require('../utils/index')
@@ -22,7 +23,6 @@ function getUserById(req, res) {
     .populate('followers')
     .populate('ratings')
     .then(user => {
-      console.log(user.finishedGames)
       res.json(user)
     })
     .catch(err => handleError(err, res))
@@ -40,8 +40,6 @@ function getUserByName(req, res) {
 }
 
 function getMe(req, res) {
-  console.log(res.locals)
-  console.log('hola')
   userModel
     .findOne({ email: res.locals.user.email })
     .populate('finishedGames')
@@ -74,7 +72,6 @@ function editMe(req, res) {
 //   userModel
 //     .findOneAndDelete({ email: res.locals.user.email })
 //     .then(result => {
-//       console.log(result)
 //       res.send(result)
 //     })
 //     .catch(err => handleError(err, res))
@@ -144,23 +141,36 @@ function addGameToFinished(req, res) {
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
-      user.finishedGames.push(req.params.gameId)
-      user.save(err => {
-        if (err) res.status(500).send('Change not saved')
-        if (user.pendingGames.includes(mongoose.Types.ObjectId(req.params.gameId))) {
-          user.pendingGames.splice(user.pendingGames.indexOf(req.params.gameId), 1)
-          user.save(err => {
-            if (err) res.status(500).send('Change not saved')
-          })
-        }
-        res.json(user.finishedGames)
-      })
+      let gameId = mongoose.Types.ObjectId(req.params.gameId)
+      if (!user.finishedGames.includes(gameId)) {
+        user.finishedGames.push(gameId)
+        user.save(err => {
+          if (err) res.status(500).send('Change not saved')
+          if (user.pendingGames.includes(gameId)) {
+            user.pendingGames.splice(user.pendingGames.indexOf(gameId), 1)
+            user.save(err => {
+              if (err) res.status(500).send('Change not saved')
+            })
+          } else {
+            gameModel
+            .findById(gameId)
+            .then(game => {
+              game.popularity++
+              game.save(err => {
+                if (err) res.status(500).send('Change not saved')
+                res.json(user.finishedGames)
+                })
+              })
+          }
+        })
+      } else {
+        res.send('You already have this game in your list')
+      }
     })
     .catch(err => handleError(err, res))
 }
 
 function deleteGameFromFinished(req, res) {
-  console.log('req>>>>>>>>>>>: ' + req)
   userModel
   .findOne({ email: res.locals.user.email })
   .then(user => {
@@ -190,17 +200,22 @@ function addGameToPending(req, res) {
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
-      user.pendingGames.push(mongoose.Types.ObjectId(req.params.gameId))
-      user.save(err => {
-        if (err) res.status(500).send('Change not saved')
-        if (user.finishedGames.includes(mongoose.Types.ObjectId(req.params.gameId))) {
-          user.finishedGames.splice(user.finishedGames.indexOf(req.params.gameId), 1)
-          user.save(err => {
-            if (err) res.status(500).send('Change not saved')
-          })
-        }
-        res.json(user.pendingGames)
-      })
+      let gameId = mongoose.Types.ObjectId(req.params.gameId)
+      if (user.pengingGames.includes(gameId)) {
+        user.pendingGames.push(gameId)
+        user.save(err => {
+          if (err) res.status(500).send('Change not saved')
+          if (user.finishedGames.includes(gameId)) {
+            user.finishedGames.splice(user.finishedGames.indexOf(gameId), 1)
+            user.save(err => {
+              if (err) res.status(500).send('Change not saved')
+            })
+          }
+          res.json(user.pendingGames)
+        })
+      } else {
+        res.send('You already have this game in your list')
+      }
     })
     .catch(err => handleError(err, res))
 }
@@ -235,10 +250,11 @@ function addGameToFavourites(req, res) {
   userModel
     .findOne({ email: res.locals.user.email })
     .then(user => {
-      const checkFinished = user.finishedGames.includes(mongoose.Types.ObjectId(req.params.gameId))
-      const checkPending = user.pendingGames.includes(mongoose.Types.ObjectId(req.params.gameId))
+      let gameId = mongoose.Types.ObjectId(req.params.gameId)
+      const checkFinished = user.finishedGames.includes(gameId)
+      const checkPending = user.pendingGames.includes(gameId)
       if (checkFinished || checkPending) {
-        user.favouriteGames.push(mongoose.Types.ObjectId(req.params.gameId))
+        user.favouriteGames.push(gameId)
         user.save(err => {
           if (err) res.status(500).send('Change not saved')
           res.json(user.favouriteGames)
